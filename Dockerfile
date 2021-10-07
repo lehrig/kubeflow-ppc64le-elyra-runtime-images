@@ -99,17 +99,17 @@ WORKDIR /tmp
 
 # Runs executed as NB_UID
 RUN case "$TARGET_RUNTIME" in \
-       "anaconda") export RUNTIME_INSTALL='' \
+       "anaconda") export RUNTIME_INSTALL="" \
        ;; \
-       "pandas") export RUNTIME_INSTALL='"pandas=$PANDAS_VERSION"' \
+       "pandas") export RUNTIME_INSTALL=\"pandas=$PANDAS_VERSION\" \
        ;; \
-       "pytorch") export RUNTIME_INSTALL='"pytorch=$PYTORCH_VERSION"' \
+       "pytorch") export RUNTIME_INSTALL=\"pytorch=$PYTORCH_VERSION\" \
        ;; \
-       "r") export RUNTIME_INSTALL='"r-environment r-essentials r-base"' \
+       "r") export RUNTIME_INSTALL=\"r-environment r-essentials r-base\" \
        ;; \
-       "tensorflow-cpu") export RUNTIME_INSTALL='"tensorflow-cpu=$TENSORFLOW_VERSION"' \
+       "tensorflow-cpu") export RUNTIME_INSTALL=\"tensorflow-cpu=$TENSORFLOW_VERSION\" \
        ;; \
-       "tensorflow") export RUNTIME_INSTALL='"tensorflow=$TENSORFLOW_VERSION"' \
+       "tensorflow") export RUNTIME_INSTALL=\"tensorflow=$TENSORFLOW_VERSION\" \
        ;; \
     esac && \
     mkdir "/home/${NB_USER}/work" && \
