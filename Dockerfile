@@ -107,7 +107,7 @@ RUN case "$TARGET_RUNTIME" in \
        ;; \
        "pytorch") export RUNTIME_INSTALL=\"pytorch=$PYTORCH_VERSION\" \
        ;; \
-       "r") export RUNTIME_INSTALL="r-environment r-essentials r-base" \
+       "r") export RUNTIME_INSTALL="r-essentials r-base" \
        ;; \
        "tensorflow-cpu") export RUNTIME_INSTALL=\"tensorflow-cpu=$TENSORFLOW_VERSION\" \
        ;; \
