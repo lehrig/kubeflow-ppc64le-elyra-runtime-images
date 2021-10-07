@@ -17,9 +17,9 @@ ARG miniforge_python="Mambaforge"
 ARG miniforge_version="${conda_version}-${miniforge_patch_number}"
 ARG IBM_POWERAI_LICENSE_ACCEPT=yes
 ARG PYTHON_VERSION=default
-ARG PYTORCH_VERSION=1.4
+ARG PYTORCH_VERSION=1.9.0
 ARG R_VERSION=4
-ARG TENSORFLOW_VERSION=2.3.1
+ARG TENSORFLOW_VERSION=2.4.1
 
 ENV DEBIAN_FRONTEND noninteractive
 ENV XDG_CACHE_HOME="/home/${NB_USER}/.cache/"
@@ -102,6 +102,8 @@ RUN case "$TARGET_RUNTIME" in \
        "anaconda") export RUNTIME_INSTALL="" \
        ;; \
        "pandas") export RUNTIME_INSTALL=\"pandas=$PANDAS_VERSION\" \
+       ;; \
+       "pytorch-cpu") export RUNTIME_INSTALL=\"pytorch-cpu=$PYTORCH_VERSION\" \
        ;; \
        "pytorch") export RUNTIME_INSTALL=\"pytorch=$PYTORCH_VERSION\" \
        ;; \
