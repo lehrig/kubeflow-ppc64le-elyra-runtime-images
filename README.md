@@ -9,9 +9,9 @@ Overview:
 - Python v3.8 / Elyra v3.0.0 / Conda v4.10.3: quay.io/ibm/kubeflow-elyra-runtimes-ppc64le:py3.8-conda4.10.3
 - Python v3.8 / Elyra v3.0.0 / Conda v4.10.3 / Pandas 1.1.1: quay.io/ibm/kubeflow-elyra-runtimes-ppc64le:py3.8-pandas1.1.1
 - Python v3.8 / Elyra v3.0.0 / Conda v4.10.3 / Tensorflow 1.15.2: quay.io/ibm/kubeflow-elyra-runtimes-ppc64le:py3.8-tensorflow1.15.2
-- Python v3.8 / Elyra v3.0.0 / Conda v4.10.3 / Tensorflow 2.3.1: quay.io/ibm/kubeflow-elyra-runtimes-ppc64le:py3.8-tensorflow2.3.1
+- Python v3.8 / Elyra v3.0.0 / Conda v4.10.3 / Tensorflow 2.4.1: quay.io/ibm/kubeflow-elyra-runtimes-ppc64le:py3.8-tensorflow2.4.1
 - Python v3.8 / Elyra v3.0.0 / Conda v4.10.3 / Tensorflow-cpu 1.15.2: quay.io/ibm/kubeflow-elyra-runtimes-ppc64le:py3.8-tensorflow-cpu1.15.2
-- Python v3.8 / Elyra v3.0.0 / Conda v4.10.3 / Tensorflow-cpu 2.3.1: quay.io/ibm/kubeflow-elyra-runtimes-ppc64le:py3.8-tensorflow-cpu2.3.1
+- Python v3.8 / Elyra v3.0.0 / Conda v4.10.3 / Tensorflow-cpu 2.4.1: quay.io/ibm/kubeflow-elyra-runtimes-ppc64le:py3.8-tensorflow-cpu2.4.1
 
 ### Building Images
 
@@ -34,7 +34,7 @@ export PYTHON_VERSION=3.8
 export CUSTOM_CONDA_VERSION=4.10.3
 export MINIFORGE_PATCH_NUMBER=6
 export PANDAS_VERSION=1.1.1
-export TENSORFLOW_VERSION=2.3.1
+export TENSORFLOW_VERSION=2.4.1
 export PYTORCH_VERSION=1.4
 export R_VERSION=4
 
