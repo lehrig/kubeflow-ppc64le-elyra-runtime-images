@@ -1,6 +1,16 @@
 # Elyra Runtime Images for Kubeflow on ppc64le
 [Elyra](https://github.com/elyra-ai/elyra) runtime images for ppc64le (IBM Power processor architecture) to be used with Kubeflow.
 
+
+### Pre-Build Images
+Go to my kubeflow-elyra-runtimes-ppc64le repository at [IBM's quay.io page](https://quay.io/repository/ibm/kubeflow-elyra-runtimes-ppc64le?tab=tags).
+
+Overview:
+- Python v3.8 / Elyra v3.0.0 / Conda v4.10.3: quay.io/ibm/kubeflow-elyra-runtimes-ppc64le:py3.8-conda4.10.3
+- Python v3.8 / Elyra v3.0.0 / Conda v4.10.3 / Pandas 1.1.1: quay.io/ibm/kubeflow-elyra-runtimes-ppc64le:py3.8-pandas1.1.1
+- Python v3.8 / Elyra v3.0.0 / Conda v4.10.3 / Tensorflow 1.15.2: quay.io/ibm/kubeflow-elyra-runtimes-ppc64le:py3.8-tf1.15.2
+- Python v3.8 / Elyra v3.0.0 / Conda v4.10.3 / Tensorflow 2.3.0: quay.io/ibm/kubeflow-elyra-runtimes-ppc64le:py3.8-tf2.3.0
+
 ### Building Images
 
 #### Prerequisites
@@ -15,20 +25,45 @@ Single-step images are used (smaller file size).
 git clone https://github.com/lehrig/kubeflow-ppc64le-elyra-runtime-images
 cd kubeflow-ppc64le-elyra-runtime-images
 
-export elyra_version=v3.0.0
-export PYTHON_VERSION=3.8
-export conda_version=4.10.3
-export miniforge_patch_number=6
+export TARGET_RUNTIME=anaconda|pandas|pytorch|r|tensorflow
 
-export ANACONDA_IMAGE=quay.io/ibm/kubeflow-elyra-runtime-anaconda-ppc64le:py$PYTHON_VERSION-conda$conda_version
+export ELYRA_VERSION=v3.0.0
+export PYTHON_VERSION=3.8
+export CUSTOM_CONDA_VERSION=4.10.3
+export MINIFORGE_PATCH_NUMBER=6
+export PANDAS_VERSION=1.1.1
+export TENSORFLOW_VERSION=2.3.0
+export PYTORCH_VERSION=1.4
+export R_VERSION=4
+export SUPPORT_GPU=false
+
+export REGISTRY=quay.io/ibm
+export IMAGE=kubeflow-elyra-runtimes-ppc64le
+
+case "$TARGET_RUNTIME" in
+   "anaconda") export RUNTIME_VERSION=$CUSTOM_CONDA_VERSION
+   ;;
+   "pandas") export RUNTIME_VERSION=$PANDAS_VERSION 
+   ;;
+   "pytorch") export RUNTIME_VERSION=$PYTORCH_VERSION 
+   ;;
+   "r") export RUNTIME_VERSION=$R_VERSION
+   ;;
+   "tensorflow") export RUNTIME_VERSION=$TENSORFLOW_VERSION
+   ;;
+esac
+
+export TAG=py${PYTHON_VERSION}-${TARGET_RUNTIME}${RUNTIME_VERSION}
+export IMAGE=$REGISTRY/${IMAGE}:${TAG}
 ```
 
 ##### Option (a): Podman
 ```
-podman build --format docker --build-arg NB_GID=0 --build-arg elyra_version=$elyra_version --build-arg PYTHON_VERSION=$PYTHON_VERSION --build-arg conda_version=$conda_version --build-arg miniforge_patch_number=$miniforge_patch_number -t $ANACONDA_IMAGE -f Dockerfile.anaconda .
+podman build --format docker --build-arg TARGET_RUNTIME=$TARGET_RUNTIME --build-arg NB_GID=0 --build-arg elyra_version=$ELYRA_VERSION --build-arg PYTHON_VERSION=$PYTHON_VERSION --build-arg conda_version=$CUSTOM_CONDA_VERSION --build-arg miniforge_patch_number=$MINIFORGE_PATCH_NUMBER --build-arg PANDAS_VERSION=$PANDAS_VERSION --build-arg PYTORCH_VERSION=$PYTORCH_VERSION --build-arg R_VERSION=$R_VERSION --build-arg TENSORFLOW_VERSION=$TENSORFLOW_VERSION --build-arg SUPPORT_GPU=$SUPPORT_GPU -t $IMAGE -f Dockerfile .
 ```
 
 ##### Option (b): Docker
 ```
-docker build --build-arg NB_GID=0 --build-arg elyra_version=$elyra_version --build-arg PYTHON_VERSION=$PYTHON_VERSION --build-arg conda_version=$conda_version --build-arg miniforge_patch_number=$miniforge_patch_number -t $ANACONDA_IMAGE -f Dockerfile.anaconda .
+docker build --build-arg TARGET_RUNTIME=$TARGET_RUNTIME --build-arg NB_GID=0 --build-arg elyra_version=$ELYRA_VERSION --build-arg PYTHON_VERSION=$PYTHON_VERSION --build-arg conda_version=$CUSTOM_CONDA_VERSION --build-arg miniforge_patch_number=$MINIFORGE_PATCH_NUMBER --build-arg PANDAS_VERSION=$PANDAS_VERSION --build-arg PYTORCH_VERSION=$PYTORCH_VERSION --build-arg R_VERSION=$R_VERSION --build-arg TENSORFLOW_VERSION=$TENSORFLOW_VERSION --build-arg SUPPORT_GPU=$SUPPORT_GPU -t $IMAGE -f Dockerfile .
+
 ```

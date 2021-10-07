@@ -5,8 +5,9 @@ FROM $ROOT_CONTAINER
 
 LABEL maintainer="Sebastian Lehrig <sebastian.lehrig1@ibm.com>"
 
+ARG TARGET_RUNTIME="anaconda"
 ARG elyra_version="v3.0.0"
-
+ARG PANDAS_VERSION="1.1.1"
 ARG NB_USER="jovyan"
 ARG NB_UID="1000"
 ARG NB_GID="100"
@@ -16,6 +17,9 @@ ARG miniforge_python="Mambaforge"
 ARG miniforge_version="${conda_version}-${miniforge_patch_number}"
 ARG IBM_POWERAI_LICENSE_ACCEPT=yes
 ARG PYTHON_VERSION=default
+ARG PYTORCH_VERSION=1.4
+ARG R_VERSION=4
+ARG TENSORFLOW_VERSION=2.3.1
 ARG SUPPORT_GPU=false
 
 ENV DEBIAN_FRONTEND noninteractive
@@ -25,7 +29,8 @@ ENV CONDA_DIR=/opt/conda \
     NB_USER=$NB_USER \
     NB_UID=$NB_UID \
     NB_GID=$NB_GID \
-    NB_PREFIX=/
+    NB_PREFIX=/ \
+    TENSORFLOW=$(if [ "$SUPPORT_GPU" = true ]; then echo "tensorflow=$TENSORFLOW_VERSION"; else echo "tensorflow-cpu=$TENSORFLOW_VERSION"; fi)
 ENV PATH="${CONDA_DIR}/bin:${PATH}" \
     HOME="/home/${NB_USER}" \
     CONDA_VERSION="${conda_version}" \
@@ -95,7 +100,19 @@ USER ${NB_UID}
 WORKDIR /tmp
 
 # Runs executed as NB_UID
-RUN mkdir "/home/${NB_USER}/work" && \
+RUN case "$TARGET_RUNTIME" in
+       "anaconda") export RUNTIME_INSTALL=""
+       ;;
+       "pandas") export RUNTIME_INSTALL="pandas=$PANDAS_VERSION"
+       ;;
+       "pytorch") export RUNTIME_INSTALL="pytorch=$PYTORCH_VERSION"
+       ;;
+       "r") export RUNTIME_INSTALL="r-environment r-essentials r-base"
+       ;;
+       "tensorflow") export RUNTIME_INSTALL=$TENSORFLOW
+       ;;
+    esac && \
+    mkdir "/home/${NB_USER}/work" && \
     # Prerequisites installation: conda, mamba, pip, tini
     set -x && \
     miniforge_arch=$(uname -m) && \
@@ -120,6 +137,8 @@ RUN mkdir "/home/${NB_USER}/work" && \
     # ----
     "conda=${CONDA_VERSION}" \
     'pip' \
+    # ----
+    "${RUNTIME_INSTALL}" \
     # ----
     && \
     conda update --all --quiet --yes && \
