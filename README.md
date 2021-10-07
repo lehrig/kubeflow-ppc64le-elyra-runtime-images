@@ -1,5 +1,4 @@
 # Elyra Runtime Images for Kubeflow on ppc64le
-
 [Elyra](https://github.com/elyra-ai/elyra) runtime images for ppc64le (IBM Power processor architecture) to be used with Kubeflow.
 
 ### Building Images
@@ -24,7 +23,12 @@ export miniforge_patch_number=6
 export ANACONDA_IMAGE=quay.io/ibm/kubeflow-elyra-runtime-anaconda-ppc64le:py$PYTHON_VERSION-conda$conda_version
 ```
 
-##### Podman
+##### Option (a): Podman
 ```
 podman build --format docker --build-arg NB_GID=0 --build-arg elyra_version=$elyra_version --build-arg PYTHON_VERSION=$PYTHON_VERSION --build-arg conda_version=$conda_version --build-arg miniforge_patch_number=$miniforge_patch_number -t $ANACONDA_IMAGE -f Dockerfile.anaconda .
+```
+
+##### Option (b): Docker
+```
+docker build --build-arg NB_GID=0 --build-arg elyra_version=$elyra_version --build-arg PYTHON_VERSION=$PYTHON_VERSION --build-arg conda_version=$conda_version --build-arg miniforge_patch_number=$miniforge_patch_number -t $ANACONDA_IMAGE -f Dockerfile.anaconda .
 ```
