@@ -20,7 +20,6 @@ ARG PYTHON_VERSION=default
 ARG PYTORCH_VERSION=1.4
 ARG R_VERSION=4
 ARG TENSORFLOW_VERSION=2.3.1
-ARG SUPPORT_GPU=false
 
 ENV DEBIAN_FRONTEND noninteractive
 ENV XDG_CACHE_HOME="/home/${NB_USER}/.cache/"
@@ -29,8 +28,7 @@ ENV CONDA_DIR=/opt/conda \
     NB_USER=$NB_USER \
     NB_UID=$NB_UID \
     NB_GID=$NB_GID \
-    NB_PREFIX=/ \
-    TENSORFLOW=$(if [ "$SUPPORT_GPU" = true ]; then echo "tensorflow=$TENSORFLOW_VERSION"; else echo "tensorflow-cpu=$TENSORFLOW_VERSION"; fi)
+    NB_PREFIX=/
 ENV PATH="${CONDA_DIR}/bin:${PATH}" \
     HOME="/home/${NB_USER}" \
     CONDA_VERSION="${conda_version}" \
@@ -109,7 +107,9 @@ RUN case "$TARGET_RUNTIME" in
        ;;
        "r") export RUNTIME_INSTALL="r-environment r-essentials r-base"
        ;;
-       "tensorflow") export RUNTIME_INSTALL=$TENSORFLOW
+       "tensorflow-cpu") export RUNTIME_INSTALL="tensorflow-cpu=$TENSORFLOW_VERSION"
+       ;;
+       "tensorflow") export RUNTIME_INSTALL="tensorflow=$TENSORFLOW_VERSION"
        ;;
     esac && \
     mkdir "/home/${NB_USER}/work" && \

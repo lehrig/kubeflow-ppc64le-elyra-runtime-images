@@ -8,8 +8,10 @@ Go to my kubeflow-elyra-runtimes-ppc64le repository at [IBM's quay.io page](http
 Overview:
 - Python v3.8 / Elyra v3.0.0 / Conda v4.10.3: quay.io/ibm/kubeflow-elyra-runtimes-ppc64le:py3.8-conda4.10.3
 - Python v3.8 / Elyra v3.0.0 / Conda v4.10.3 / Pandas 1.1.1: quay.io/ibm/kubeflow-elyra-runtimes-ppc64le:py3.8-pandas1.1.1
-- Python v3.8 / Elyra v3.0.0 / Conda v4.10.3 / Tensorflow 1.15.2: quay.io/ibm/kubeflow-elyra-runtimes-ppc64le:py3.8-tf1.15.2
-- Python v3.8 / Elyra v3.0.0 / Conda v4.10.3 / Tensorflow 2.3.0: quay.io/ibm/kubeflow-elyra-runtimes-ppc64le:py3.8-tf2.3.0
+- Python v3.8 / Elyra v3.0.0 / Conda v4.10.3 / Tensorflow 1.15.2: quay.io/ibm/kubeflow-elyra-runtimes-ppc64le:py3.8-tensorflow1.15.2
+- Python v3.8 / Elyra v3.0.0 / Conda v4.10.3 / Tensorflow 2.3.0: quay.io/ibm/kubeflow-elyra-runtimes-ppc64le:py3.8-tensorflow2.3.0
+- Python v3.8 / Elyra v3.0.0 / Conda v4.10.3 / Tensorflow-cpu 1.15.2: quay.io/ibm/kubeflow-elyra-runtimes-ppc64le:py3.8-tensorflow-cpu1.15.2
+- Python v3.8 / Elyra v3.0.0 / Conda v4.10.3 / Tensorflow-cpu 2.3.0: quay.io/ibm/kubeflow-elyra-runtimes-ppc64le:py3.8-tensorflow-cpu2.3.0
 
 ### Building Images
 
@@ -35,7 +37,6 @@ export PANDAS_VERSION=1.1.1
 export TENSORFLOW_VERSION=2.3.0
 export PYTORCH_VERSION=1.4
 export R_VERSION=4
-export SUPPORT_GPU=false
 
 export REGISTRY=quay.io/ibm
 export IMAGE=kubeflow-elyra-runtimes-ppc64le
@@ -51,6 +52,8 @@ case "$TARGET_RUNTIME" in
    ;;
    "tensorflow") export RUNTIME_VERSION=$TENSORFLOW_VERSION
    ;;
+   "tensorflow-cpu") export RUNTIME_VERSION=$TENSORFLOW_VERSION
+   ;;
 esac
 
 export TAG=py${PYTHON_VERSION}-${TARGET_RUNTIME}${RUNTIME_VERSION}
@@ -59,11 +62,11 @@ export IMAGE=$REGISTRY/${IMAGE}:${TAG}
 
 ##### Option (a): Podman
 ```
-podman build --format docker --build-arg TARGET_RUNTIME=$TARGET_RUNTIME --build-arg NB_GID=0 --build-arg elyra_version=$ELYRA_VERSION --build-arg PYTHON_VERSION=$PYTHON_VERSION --build-arg conda_version=$CUSTOM_CONDA_VERSION --build-arg miniforge_patch_number=$MINIFORGE_PATCH_NUMBER --build-arg PANDAS_VERSION=$PANDAS_VERSION --build-arg PYTORCH_VERSION=$PYTORCH_VERSION --build-arg R_VERSION=$R_VERSION --build-arg TENSORFLOW_VERSION=$TENSORFLOW_VERSION --build-arg SUPPORT_GPU=$SUPPORT_GPU -t $IMAGE -f Dockerfile .
+podman build --format docker --build-arg TARGET_RUNTIME=$TARGET_RUNTIME --build-arg NB_GID=0 --build-arg elyra_version=$ELYRA_VERSION --build-arg PYTHON_VERSION=$PYTHON_VERSION --build-arg conda_version=$CUSTOM_CONDA_VERSION --build-arg miniforge_patch_number=$MINIFORGE_PATCH_NUMBER --build-arg PANDAS_VERSION=$PANDAS_VERSION --build-arg PYTORCH_VERSION=$PYTORCH_VERSION --build-arg R_VERSION=$R_VERSION --build-arg TENSORFLOW_VERSION=$TENSORFLOW_VERSION -t $IMAGE -f Dockerfile .
 ```
 
 ##### Option (b): Docker
 ```
-docker build --build-arg TARGET_RUNTIME=$TARGET_RUNTIME --build-arg NB_GID=0 --build-arg elyra_version=$ELYRA_VERSION --build-arg PYTHON_VERSION=$PYTHON_VERSION --build-arg conda_version=$CUSTOM_CONDA_VERSION --build-arg miniforge_patch_number=$MINIFORGE_PATCH_NUMBER --build-arg PANDAS_VERSION=$PANDAS_VERSION --build-arg PYTORCH_VERSION=$PYTORCH_VERSION --build-arg R_VERSION=$R_VERSION --build-arg TENSORFLOW_VERSION=$TENSORFLOW_VERSION --build-arg SUPPORT_GPU=$SUPPORT_GPU -t $IMAGE -f Dockerfile .
+docker build --build-arg TARGET_RUNTIME=$TARGET_RUNTIME --build-arg NB_GID=0 --build-arg elyra_version=$ELYRA_VERSION --build-arg PYTHON_VERSION=$PYTHON_VERSION --build-arg conda_version=$CUSTOM_CONDA_VERSION --build-arg miniforge_patch_number=$MINIFORGE_PATCH_NUMBER --build-arg PANDAS_VERSION=$PANDAS_VERSION --build-arg PYTORCH_VERSION=$PYTORCH_VERSION --build-arg R_VERSION=$R_VERSION --build-arg TENSORFLOW_VERSION=$TENSORFLOW_VERSION -t $IMAGE -f Dockerfile .
 
 ```
