@@ -27,7 +27,7 @@ Single-step images are used (smaller file size).
 git clone https://github.com/lehrig/kubeflow-ppc64le-elyra-runtime-images
 cd kubeflow-ppc64le-elyra-runtime-images
 
-export TARGET_RUNTIME=anaconda|pandas|pytorch|r|tensorflow
+export TARGET_RUNTIME=anaconda|pandas|pytorch-cpu|pytorch|r|tensorflow-cpu|tensorflow
 
 export ELYRA_VERSION=v3.0.0
 export PYTHON_VERSION=3.8
@@ -57,16 +57,16 @@ case "$TARGET_RUNTIME" in
 esac
 
 export TAG=py${PYTHON_VERSION}-${TARGET_RUNTIME}${RUNTIME_VERSION}
-export IMAGE=$REGISTRY/${IMAGE}:${TAG}
+export TARGET=$REGISTRY/${IMAGE}:${TAG}
 ```
 
 ##### Option (a): Podman
 ```
-podman build --format docker --build-arg TARGET_RUNTIME=$TARGET_RUNTIME --build-arg NB_GID=0 --build-arg elyra_version=$ELYRA_VERSION --build-arg PYTHON_VERSION=$PYTHON_VERSION --build-arg conda_version=$CUSTOM_CONDA_VERSION --build-arg miniforge_patch_number=$MINIFORGE_PATCH_NUMBER --build-arg PANDAS_VERSION=$PANDAS_VERSION --build-arg PYTORCH_VERSION=$PYTORCH_VERSION --build-arg R_VERSION=$R_VERSION --build-arg TENSORFLOW_VERSION=$TENSORFLOW_VERSION -t $IMAGE -f Dockerfile .
+podman build --format docker --build-arg TARGET_RUNTIME=$TARGET_RUNTIME --build-arg NB_GID=0 --build-arg elyra_version=$ELYRA_VERSION --build-arg PYTHON_VERSION=$PYTHON_VERSION --build-arg conda_version=$CUSTOM_CONDA_VERSION --build-arg miniforge_patch_number=$MINIFORGE_PATCH_NUMBER --build-arg PANDAS_VERSION=$PANDAS_VERSION --build-arg PYTORCH_VERSION=$PYTORCH_VERSION --build-arg R_VERSION=$R_VERSION --build-arg TENSORFLOW_VERSION=$TENSORFLOW_VERSION -t $TARGET -f Dockerfile .
 ```
 
 ##### Option (b): Docker
 ```
-docker build --build-arg TARGET_RUNTIME=$TARGET_RUNTIME --build-arg NB_GID=0 --build-arg elyra_version=$ELYRA_VERSION --build-arg PYTHON_VERSION=$PYTHON_VERSION --build-arg conda_version=$CUSTOM_CONDA_VERSION --build-arg miniforge_patch_number=$MINIFORGE_PATCH_NUMBER --build-arg PANDAS_VERSION=$PANDAS_VERSION --build-arg PYTORCH_VERSION=$PYTORCH_VERSION --build-arg R_VERSION=$R_VERSION --build-arg TENSORFLOW_VERSION=$TENSORFLOW_VERSION -t $IMAGE -f Dockerfile .
+docker build --build-arg TARGET_RUNTIME=$TARGET_RUNTIME --build-arg NB_GID=0 --build-arg elyra_version=$ELYRA_VERSION --build-arg PYTHON_VERSION=$PYTHON_VERSION --build-arg conda_version=$CUSTOM_CONDA_VERSION --build-arg miniforge_patch_number=$MINIFORGE_PATCH_NUMBER --build-arg PANDAS_VERSION=$PANDAS_VERSION --build-arg PYTORCH_VERSION=$PYTORCH_VERSION --build-arg R_VERSION=$R_VERSION --build-arg TENSORFLOW_VERSION=$TENSORFLOW_VERSION -t $TARGET -f Dockerfile .
 
 ```
