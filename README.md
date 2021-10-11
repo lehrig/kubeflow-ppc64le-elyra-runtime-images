@@ -46,13 +46,15 @@ case "$TARGET_RUNTIME" in
    ;;
    "pandas") export RUNTIME_VERSION=$PANDAS_VERSION 
    ;;
+   "pytorch-cpu") export RUNTIME_VERSION=$PYTORCH_VERSION 
+   ;;
    "pytorch") export RUNTIME_VERSION=$PYTORCH_VERSION 
    ;;
    "r") export RUNTIME_VERSION=$R_VERSION
    ;;
-   "tensorflow") export RUNTIME_VERSION=$TENSORFLOW_VERSION
-   ;;
    "tensorflow-cpu") export RUNTIME_VERSION=$TENSORFLOW_VERSION
+   ;;
+   "tensorflow") export RUNTIME_VERSION=$TENSORFLOW_VERSION
    ;;
 esac
 
