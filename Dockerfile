@@ -6,8 +6,8 @@ FROM $ROOT_CONTAINER
 LABEL maintainer="Sebastian Lehrig <sebastian.lehrig1@ibm.com>"
 
 ARG TARGET_RUNTIME="anaconda"
-ARG elyra_version="v3.0.0"
-ARG PANDAS_VERSION="1.1.1"
+ARG elyra_version="v3.6.0"
+ARG PANDAS_VERSION="1.4.1"
 ARG NB_USER="jovyan"
 ARG NB_UID="1000"
 ARG NB_GID="100"
@@ -17,9 +17,9 @@ ARG miniforge_python="Mambaforge"
 ARG miniforge_version="${conda_version}-${miniforge_patch_number}"
 ARG IBM_POWERAI_LICENSE_ACCEPT=yes
 ARG PYTHON_VERSION=default
-ARG PYTORCH_VERSION=1.9.0
+ARG PYTORCH_VERSION=1.10.1
 ARG R_VERSION=4
-ARG TENSORFLOW_VERSION=2.4.2
+ARG TENSORFLOW_VERSION=2.7.0
 
 ENV DEBIAN_FRONTEND noninteractive
 ENV XDG_CACHE_HOME="/home/${NB_USER}/.cache/"
@@ -131,7 +131,7 @@ RUN case "$TARGET_RUNTIME" in \
     conda config --system --set show_channel_urls true && \
     conda config --system --set channel_priority true && \
     conda config --system --prepend channels https://opence.mit.edu/ && \
-    conda config --system --prepend channels https://ftp.osuosl.org/pub/open-ce/1.2.2/ && \
+    conda config --system --prepend channels https://ftp.osuosl.org/pub/open-ce/1.5.1/ && \
     conda config --system --prepend channels https://public.dhe.ibm.com/ibmdl/export/pub/software/server/ibm-ai/conda/ && \
     if [[ "${PYTHON_VERSION}" != "default" ]]; then conda install --yes python="${PYTHON_VERSION}"; fi && \
     conda list python | grep '^python ' | tr -s ' ' | cut -d ' ' -f 1,2 >> "${CONDA_DIR}/conda-meta/pinned" && \
