@@ -6,7 +6,7 @@ FROM $ROOT_CONTAINER
 LABEL maintainer="Sebastian Lehrig <sebastian.lehrig1@ibm.com>"
 
 ARG TARGET_RUNTIME="anaconda"
-ARG elyra_version="v3.6.0"
+ARG elyra_version="3.6.0"
 ARG PANDAS_VERSION="1.4.1"
 ARG NB_USER="jovyan"
 ARG NB_UID="1000"
@@ -124,7 +124,7 @@ RUN case "$TARGET_RUNTIME" in \
     wget --quiet "https://github.com/conda-forge/miniforge/releases/download/${miniforge_version}/${miniforge_installer}" && \
     /bin/bash "${miniforge_installer}" -f -b -p "${CONDA_DIR}" && \
     rm "${miniforge_installer}" && \
-    wget --quiet "https://raw.githubusercontent.com/elyra-ai/elyra/${elyra_version}/etc/generic/requirements-elyra.txt" && \
+    wget --quiet "https://raw.githubusercontent.com/elyra-ai/elyra/v${elyra_version}/etc/generic/requirements-elyra.txt" && \
     # Conda configuration see https://conda.io/projects/conda/en/latest/configuration.html
     echo "conda ${CONDA_VERSION}" >> "${CONDA_DIR}/conda-meta/pinned" && \
     conda config --system --set auto_update_conda false && \
